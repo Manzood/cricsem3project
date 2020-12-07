@@ -5,11 +5,25 @@ import Navbar from './components/Navbar';
 import MyCard from './components/MyCard';
 import {getMatches} from "./api/Api";
 import {Fragment, useEffect, useState} from 'react';
-// import {transfermatchesintofile} from './mongodb/db'
-const http = require('http');
-const hostname = '127.0.0.1';
-const port = 3000;
-// var exportval;
+
+function updateData(postData){
+  fetch ('http://localhost:5000', {method: 'POST', body: postData, mode: 'no-cors'})
+  .then((res) => {
+    console.log(res);
+  })
+  .catch(err => console.log(err));
+}
+
+var matchdata;
+
+function getData (request) {
+  fetch ('http://localhost:5000', {method: 'GET', mode: 'no-cors'})
+  .then((res) => {
+    console.log(res)
+    matchdata = res;
+  })
+  .catch(err => console.log(err));
+}
 
 function App() { 
  const [matches, setMatches] = useState([]);
@@ -17,14 +31,14 @@ function App() {
     getMatches()
     .then((data)=> {
       setMatches(data.matches)
-// these are the changed I've made... Everything works well, so far
-      // so maybe over here?
-      // transfermatchesintofile(data.matches);
       console.log("This is the data \n", typeof(data), "\n", data);
-      // exportval = data.matches;
-      // export {exportval};
+      updateData(data.matches);
+      getData(data.matches);
     })
-    .catch(error=> alert("Unable to load"));
+    .catch(error=> {
+      console.log("The error is: ", error);
+      alert("Unable to load")
+    });
   },[]);
 
   return (
@@ -40,7 +54,6 @@ function App() {
            <Fragment>
              {match.type === "Twenty20"?(
                 <MyCard key={match.unique_id} match ={match} />
-                // should probably call the function to store details about the match over here
              ) : (
                ""
              )}

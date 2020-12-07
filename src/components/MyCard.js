@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 
 import {
   Button,
@@ -74,7 +74,7 @@ const MyCard = ({ match }) => {
   const showDetailBtnClicked = (id) => {
     getMatchDetail(id)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setDatail(data);
         handleClickOpen();
       })
@@ -93,7 +93,7 @@ const MyCard = ({ match }) => {
 
   return (
     <>
-      {match.type == "Twenty20" ? getMatchCard() : ""}
+      {match.type === "Twenty20" ? getMatchCard() : ""}
       <Dialog
         open={open}
         onClose={handleClose}
